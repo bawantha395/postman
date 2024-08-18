@@ -11,6 +11,56 @@
 			"name": "Positive Scenarios",
 			"item": [
 				{
+					"name": "Create Auth Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.environment.set(\"b_token\", jsonData.token);",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\" : \"admin\",\n    \"password\" : \"password123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://restful-booker.herokuapp.com/auth",
+							"protocol": "https",
+							"host": [
+								"restful-booker",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Create Booking",
 					"event": [
 						{
@@ -149,6 +199,20 @@
 				},
 				{
 					"name": "Update Booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -162,7 +226,7 @@
 							},
 							{
 								"key": "Cookie",
-								"value": "token={{token}}"
+								"value": "token={{b_token}}"
 							}
 						],
 						"body": {
@@ -175,7 +239,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://restful-booker.herokuapp.com/booking/1",
+							"raw": "https://restful-booker.herokuapp.com/booking/{{b_id}}",
 							"protocol": "https",
 							"host": [
 								"restful-booker",
@@ -184,7 +248,7 @@
 							],
 							"path": [
 								"booking",
-								"1"
+								"{{b_id}}"
 							]
 						}
 					},
@@ -197,8 +261,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
 									"});"
 								],
 								"type": "text/javascript",
@@ -215,11 +279,11 @@
 							},
 							{
 								"key": "Cookie",
-								"value": "token={{token}}"
+								"value": "token={{b_token}}"
 							}
 						],
 						"url": {
-							"raw": "https://restful-booker.herokuapp.com/booking/1",
+							"raw": "https://restful-booker.herokuapp.com/booking/{{b_id}}",
 							"protocol": "https",
 							"host": [
 								"restful-booker",
@@ -228,54 +292,7 @@
 							],
 							"path": [
 								"booking",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Auth Token",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var jsonData = pm.response.json();",
-									"pm.environment.set(\"token\", jsonData.token);"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"username\" : \"admin\",\n    \"password\" : \"password123\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://restful-booker.herokuapp.com/auth",
-							"protocol": "https",
-							"host": [
-								"restful-booker",
-								"herokuapp",
-								"com"
-							],
-							"path": [
-								"auth"
+								"{{b_id}}"
 							]
 						}
 					},
